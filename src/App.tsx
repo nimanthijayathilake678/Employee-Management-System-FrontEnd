@@ -61,7 +61,7 @@ const App: React.FC = () => {
                   element={
                     <EmployeeCreate
                       onSubmit={(data) => {
-                        // TODO: Replace with actual submit logic
+                        //  actual submit logic
                         console.log('Employee form submitted:', data);
                       }}
                     />

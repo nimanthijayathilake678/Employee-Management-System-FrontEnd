@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 // import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 // import { fetchEmployees, deleteEmployee } from '../../../store/slices/employeeSlice';
-// import { Employee } from '../../../types/employee';
+import { Employee } from '../../../types/employee';
 
 const EmployeeList: React.FC = () => {
   //const dispatch = useAppDispatch();
@@ -51,11 +51,11 @@ const EmployeeList: React.FC = () => {
   return (
     <Box>
       <Box display="flex" justifyContent="between" alignItems="center" mb={3}>
-        <Typography variant="h4">Employees</Typography>
+        <Typography variant="h4">EMPLOYEES</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          href="/employees/create"
+          href="/dashboard/employees/create"
         >
           Add Employee
         </Button>
