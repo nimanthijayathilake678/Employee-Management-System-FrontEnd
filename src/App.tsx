@@ -1,26 +1,76 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-function App() {
+// import { store } from './store/store';
+import { theme } from './styles/theme';
+// import AuthGuard from './guards/AuthGuard';
+// import GuestGuard from './guards/GuestGuard';
+// import DashboardLayout from './layouts/DashboardLayout';
+// import AuthLayout from './layouts/AuthLayout';
+
+// Pages
+import Login from './pages/Login/Login';
+// import Dashboard from './pages/Dashboard';
+// import EmployeeList from './pages/Employees/EmployeeList';
+// import EmployeeCreate from './pages/Employees/EmployeeCreate';
+// import EmployeeEdit from './pages/Employees/EmployeeEdit';
+// import AttendanceList from './pages/Attendance/AttendanceList';
+// import InvoiceList from './pages/Invoices/InvoiceList';
+// import PaysheetList from './pages/Paysheets/PaysheetList';
+// import NotFound from './pages/NotFound';
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <Provider store={store}>
+    <ThemeProvider theme={theme}>
+    
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <Router>
+            <Routes>
+              {/* Guest routes */}
+              <Route
+                path="/login"
+                element={
+                  // <GuestGuard>
+                  //   <AuthLayout>
+                      <Login />
+                  //   </AuthLayout>
+                  // </GuestGuard>
+                }
+              />
+
+              {/* Protected routes */}
+              {/* <Route
+                path="/"
+                element={
+                  <AuthGuard>
+                    <DashboardLayout />
+                  </AuthGuard>
+                }
+              >
+                <Route index element={<Dashboard />} />
+                <Route path="employees" element={<EmployeeList />} />
+                <Route path="employees/create" element={<EmployeeCreate />} />
+                <Route path="employees/edit/:id" element={<EmployeeEdit />} />
+                <Route path="attendance" element={<AttendanceList />} />
+                <Route path="invoices" element={<InvoiceList />} />
+                <Route path="paysheets" element={<PaysheetList />} />
+              </Route> */}
+
+              {/* 404 page */}
+              {/* <Route path="*" element={<NotFound />} /> */}
+            </Routes>
+          </Router>
+        </LocalizationProvider>
+      </ThemeProvider>
+    // </Provider>
   );
-}
+};
 
 export default App;
