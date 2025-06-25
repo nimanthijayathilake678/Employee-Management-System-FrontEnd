@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
-// import { store } from './store/store';
+import { store } from './store/store';
 import { theme } from "./styles/theme";
 // import AuthGuard from './guards/AuthGuard';
 // import GuestGuard from './guards/GuestGuard';
@@ -26,7 +26,7 @@ import EmployeeCreate from './pages/Employees/EmployeeForm/EmployeeForm';
 
 const App: React.FC = () => {
   return (
-    // <Provider store={store}>
+    <Provider store={store}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -79,7 +79,7 @@ const App: React.FC = () => {
         </Router>
       </LocalizationProvider>
     </ThemeProvider>
-    // </Provider>
+    </Provider>
   );
 };
 
