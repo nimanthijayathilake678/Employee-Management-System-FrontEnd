@@ -15,10 +15,13 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Employee, EmployeeFormData } from '../../../types/employee';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { addEmployee } from '../../../store/slices/employeeSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface EmployeeFormProps {
   employee?: Employee;
-  onSubmit: (data: EmployeeFormData) => void;
+  onSubmit?: (data: EmployeeFormData) => void;
   loading?: boolean;
 }
 
@@ -43,6 +46,10 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   onSubmit,
   loading = false
 }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading: reduxLoading } = useAppSelector(state => state.employee);
+
   const {
     register,
     handleSubmit,
@@ -69,13 +76,30 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         }
   });
 
+  // Submit logic to send data to backend
+  const handleFormSubmit = async (data: EmployeeFormData) => {
+    try {
+      // Convert hireDate to ISO string if needed
+      const payload = {
+        ...data,
+        hireDate: data.hireDate instanceof Date ? data.hireDate.toISOString().split('T')[0] : data.hireDate
+      };
+      await dispatch(addEmployee(payload as Employee)).unwrap();
+      navigate('/employees');
+    } catch (error) {
+      // Optionally handle error here
+      // eslint-disable-next-line no-console
+      console.error('Failed to add employee:', error);
+    }
+  };
+
   return (
     <Card>
       <CardContent>
         <Typography variant="h5" gutterBottom>
           {employee ? 'Edit Employee' : 'Add Employee'}
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit ?? handleFormSubmit)}>
           <Stack spacing={3}>
             <Box display="flex" gap={3} flexWrap="wrap">
               <TextField
@@ -179,9 +203,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
               <Button
                 type="submit"
                 variant="contained"
-                disabled={loading}
+                disabled={loading || reduxLoading}
               >
-                {loading ? 'Saving...' : 'Save'}
+                {(loading || reduxLoading) ? 'Saving...' : 'Save'}
               </Button>
             </Box>
           </Stack>
