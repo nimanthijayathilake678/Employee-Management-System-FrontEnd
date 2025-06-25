@@ -9,11 +9,9 @@ import {
   TextField,
   Button,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Stack
+  Stack,
+  Checkbox,
+  FormControlLabel
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Employee, EmployeeFormData } from '../../../types/employee';
@@ -24,18 +22,21 @@ interface EmployeeFormProps {
   loading?: boolean;
 }
 
+// Validation schema
 const schema = yup.object({
+  employeeCode: yup.string().required('Employee code is required'),
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string(),
-  department: yup.string().required('Department is required'),
+  phone: yup.string().required('Phone Number is required'),
   position: yup.string().required('Position is required'),
-  hireDate: yup.date().required('Hire date is required'),
-  baseSalary: yup.number().positive('Salary must be positive').required('Base salary is required')
-});
-
-const departments = ['IT', 'HR', 'Finance', 'Marketing', 'Operations'];
+  hireDate: yup.date().typeError('Hire date is required').required('Hire date is required'),
+  baseSalary: yup
+    .string()
+    .required('Base salary is required')
+    .matches(/^\d+(\.\d{1,2})?$/, 'Salary must be a valid number'),
+  active: yup.boolean().required()
+}).required();
 
 const EmployeeForm: React.FC<EmployeeFormProps> = ({
   employee,
@@ -48,22 +49,24 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
     control,
     formState: { errors }
   } = useForm<EmployeeFormData>({
-    // resolver: yupResolver(schema),
-    // defaultValues: employee
-    //   ? {
-    //       ...employee,
-    //       hireDate: employee.hireDate ? new Date(employee.hireDate) : null
-    //     }
-    //   : {
-    //       firstName: '',
-    //       lastName: '',
-    //       email: '',
-    //       phone: '',
-    //       department: '',
-    //       position: '',
-    //       hireDate: null,
-    //       baseSalary: undefined
-    //     }
+    resolver: yupResolver(schema),
+    defaultValues: employee
+      ? {
+          ...employee,
+          hireDate: employee.hireDate ? new Date(employee.hireDate) : new Date(),
+          active: employee.active ?? true
+        }
+      : {
+          employeeCode: '',
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          position: '',
+          hireDate: new Date(),
+          baseSalary: '',
+          active: true
+        }
   });
 
   return (
@@ -72,9 +75,17 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         <Typography variant="h5" gutterBottom>
           {employee ? 'Edit Employee' : 'Add Employee'}
         </Typography>
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
+            <Box display="flex" gap={3} flexWrap="wrap">
+              <TextField
+                {...register('employeeCode')}
+                label="Employee Code"
+                fullWidth
+                error={!!errors.employeeCode}
+                helperText={errors.employeeCode?.message}
+              />
+            </Box>
             <Box display="flex" gap={3} flexWrap="wrap">
               <TextField
                 {...register('firstName')}
@@ -91,7 +102,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                 helperText={errors.lastName?.message}
               />
             </Box>
-
             <Box display="flex" gap={3} flexWrap="wrap">
               <TextField
                 {...register('email')}
@@ -109,23 +119,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                 helperText={errors.phone?.message}
               />
             </Box>
-
             <Box display="flex" gap={3} flexWrap="wrap">
-              <FormControl fullWidth error={!!errors.department}>
-                <InputLabel>Department</InputLabel>
-                <Select
-                  label="Department"
-                  defaultValue=""
-                  {...register('department')}
-                >
-                  {departments.map((dept) => (
-                    <MenuItem key={dept} value={dept}>
-                      {dept}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
               <TextField
                 {...register('position')}
                 label="Position"
@@ -134,7 +128,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                 helperText={errors.position?.message}
               />
             </Box>
-
             <Box display="flex" gap={3} flexWrap="wrap">
               <Controller
                 name="hireDate"
@@ -154,17 +147,31 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                   />
                 )}
               />
-
-              <TextField
+               <TextField
                 {...register('baseSalary')}
                 label="Base Salary"
-                type="number"
+                type="text"
                 fullWidth
                 error={!!errors.baseSalary}
                 helperText={errors.baseSalary?.message}
               />
             </Box>
-
+            <FormControlLabel
+              control={
+                <Controller
+                  name="active"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      {...field}
+                      checked={field.value}
+                      color="primary"
+                    />
+                  )}
+                />
+              }
+              label="Active"
+            />
             <Box display="flex" justifyContent="flex-end" gap={2}>
               <Button variant="outlined" href="/employees">
                 Cancel

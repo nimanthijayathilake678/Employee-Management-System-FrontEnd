@@ -1,36 +1,34 @@
 export interface Employee {
-  id: number;
+  employeeId: number;
   employeeCode: string;
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
-  department: string;
+  phone: string;
   position: string;
-  hireDate: string;
-  baseSalary: number;
+  hireDate: string; 
+  baseSalary: string;
   active: boolean;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface EmployeeFormData {
+  employeeCode: string;
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
-  department: string;
+  phone: string;
   position: string;
   hireDate: Date;
-  baseSalary: number;
+  baseSalary: string;
+  active: boolean;
 }
 
 export interface EmployeeFilter {
   search?: string;
-  department?: string;
   active?: boolean;
   page?: number;
   size?: number;
   sortBy?: string;
   direction?: 'asc' | 'desc';
+
 }
