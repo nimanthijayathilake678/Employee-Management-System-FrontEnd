@@ -46,7 +46,39 @@ const EmployeeList: React.FC = () => {
   );
 
   if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography color="error">{error}</Typography>;
+  if (error) return <Typography color="error">No Data Availabe</Typography>;
+  if (!filteredEmployees.length) {
+    return (
+      <Box>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Typography variant="h4">EMPLOYEES</Typography>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            href="/dashboard/employees/create"
+          >
+            Add Employee
+          </Button>
+        </Box>
+
+        <Box mb={3}>
+          <TextField
+            placeholder="Search employees..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              startAdornment: <SearchIcon sx={{ mr: 1, color: 'grey.500' }} />
+            }}
+            sx={{ minWidth: 300 }}
+          />
+        </Box>
+
+        <Typography variant="h6" color="text.secondary" align="center" sx={{ mt: 4 }}>
+          No Employee Data Fetched
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box>

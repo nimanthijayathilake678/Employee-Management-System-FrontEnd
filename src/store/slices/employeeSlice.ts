@@ -5,7 +5,7 @@ import { Employee } from '../../types/employee';
 export const fetchEmployees = createAsyncThunk(
   'employee/fetchEmployees',
   async () => {
-    const response = await fetch('/api/employees');
+    const response = await fetch('http://localhost:8089/api/employees');
     return (await response.json()) as Employee[];
   }
 );
