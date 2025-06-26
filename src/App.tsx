@@ -18,6 +18,9 @@ import Login from "./pages/Login/Login";
 import Dashboard from './pages/Dashboard/Dashborad';
 import EmployeeList from './pages/Employees/EmployeeList/EmployeeList';
 import EmployeeCreate from './pages/Employees/EmployeeForm/EmployeeForm';
+import DutyPointList from './pages/DutyPoint/DutyPointList/DutyPointList';
+import DutyPointForm from './pages/DutyPoint/DutyPointForm/DutyPointForm';
+
 // import EmployeeEdit from './pages/Employees/EmployeeEdit';
 // import AttendanceList from './pages/Attendance/AttendanceList';
 // import InvoiceList from './pages/Invoices/InvoiceList';
@@ -54,16 +57,21 @@ const App: React.FC = () => {
               }
             >
               <Route index element={<Dashboard />} />
-                <Route path="/dashboard/employees" element={<EmployeeList />} />
-                {/* <Route path="employees/create" element={<EmployeeCreate/>} /> */}
+                <Route path="/dashboard/employees" element={<EmployeeList/>} />
                 <Route
                   path="/dashboard/employees/create"
                   element={<EmployeeCreate />}
+                />
+                <Route path="/dashboard/dutypoints" element={<DutyPointList/>} />
+                <Route
+                  path="/dashboard/dutypoints/create"
+                  element={<DutyPointForm />}
                 />
                 {/* <Route path="employees/edit/:id" element={<EmployeeEdit />} />
                 <Route path="attendance" element={<AttendanceList />} />
                 <Route path="invoices" element={<InvoiceList />} />
                 <Route path="paysheets" element={<PaysheetList />} /> */}
+                
             </Route>
 
             {/* 404 page */}
