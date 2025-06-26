@@ -35,9 +35,13 @@ const Dashboard: React.FC = () => {
           <Typography variant="h6">PAYSHEET MANAGMENT</Typography>
           <Typography>Paysheet Managment</Typography>
         </Paper>
-        <Paper elevation={3} sx={{ padding: 2, flex: '1 1 30%' }}>
-          <Typography variant="h6">PAYSHEET MANAGMENT</Typography>
-          <Typography>1</Typography>
+        <Paper
+          elevation={3}
+          sx={{ padding: 2, flex: '1 1 30%', cursor: 'pointer' }} 
+          onClick={() => navigate('/dashboard/dutypoints')} 
+        >
+          <Typography variant="h6">DUTY POINT MANAGMENT</Typography>
+          <Typography>Duty Points Creations</Typography>
         </Paper>
         <Paper elevation={3} sx={{ padding: 2, flex: '1 1 30%' }}>
           <Typography variant="h6">PAYSHEET MANAGMENT</Typography>
