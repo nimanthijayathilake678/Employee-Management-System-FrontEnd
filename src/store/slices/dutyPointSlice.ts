@@ -10,6 +10,27 @@ export const fetchDutyPoint = createAsyncThunk(
   }
 );
 
+// Creating a new duty point
+export const createDutyPoint = createAsyncThunk(
+  'dutypoint/createDutyPoint',
+  async (dutyPoint: Omit<DutyPoint, 'dutyPoint_id'>, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:8089/api/DutyPoint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dutyPoint),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || 'Failed to create duty point');
+      }
+      return (await response.json()) as DutyPoint;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to create duty point');
+    }
+  }
+);
+
 interface DutyPointState {
   dutyPoints: DutyPoint[];
   loading: boolean;
@@ -39,6 +60,18 @@ const dutyPointSlice = createSlice({
       .addCase(fetchDutyPoint.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch duty points';
+      })
+      .addCase(createDutyPoint.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createDutyPoint.fulfilled, (state, action: PayloadAction<DutyPoint>) => {
+        state.dutyPoints.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(createDutyPoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to create duty point';
       });
   },
 });
