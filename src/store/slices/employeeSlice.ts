@@ -19,10 +19,10 @@ export const deleteEmployee = createAsyncThunk(
   }
 );
 
-// Async thunk for adding an employee
+//  adding an employee
 export const addEmployee = createAsyncThunk(
   'employee/addEmployee',
-  async (employee: Employee, { rejectWithValue }) => {
+  async (employee: Omit<Employee, 'employeeId'>, { rejectWithValue }) => {
     try {
       const response = await fetch('http://localhost:8089/api/employees', {
         method: 'POST',
@@ -33,6 +33,7 @@ export const addEmployee = createAsyncThunk(
         const errorData = await response.json();
         return rejectWithValue(errorData.message || 'Failed to add employee');
       }
+      console.log("Employee Updated:)");
       return (await response.json()) as Employee;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to add employee');

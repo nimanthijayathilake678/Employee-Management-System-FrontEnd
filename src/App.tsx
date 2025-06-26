@@ -58,14 +58,7 @@ const App: React.FC = () => {
                 {/* <Route path="employees/create" element={<EmployeeCreate/>} /> */}
                 <Route
                   path="/dashboard/employees/create"
-                  element={
-                    <EmployeeCreate
-                      onSubmit={(data) => {
-                        //  actual submit logic
-                        console.log('Employee form submitted:', data);
-                      }}
-                    />
-                  }
+                  element={<EmployeeCreate />}
                 />
                 {/* <Route path="employees/edit/:id" element={<EmployeeEdit />} />
                 <Route path="attendance" element={<AttendanceList />} />

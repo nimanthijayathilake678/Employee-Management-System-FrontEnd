@@ -78,20 +78,21 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
   // Submit logic to send data to backend
   const handleFormSubmit = async (data: EmployeeFormData) => {
-    try {
-      // Convert hireDate to ISO string if needed
-      const payload = {
-        ...data,
-        hireDate: data.hireDate instanceof Date ? data.hireDate.toISOString().split('T')[0] : data.hireDate
-      };
-      await dispatch(addEmployee(payload as Employee)).unwrap();
-      navigate('/employees');
-    } catch (error) {
-      // Optionally handle error here
-      // eslint-disable-next-line no-console
-      console.error('Failed to add employee:', error);
-    }
-  };
+  try {
+    console.log("Submitting form with data:", data);
+    const payload: Omit<Employee, 'employeeId'> = {
+      ...data,
+      hireDate: data.hireDate instanceof Date
+        ? data.hireDate.toISOString()
+        : data.hireDate,
+
+    };
+    await dispatch(addEmployee(payload)).unwrap();
+    navigate('/dashboard/employees');
+  } catch (error) {
+    console.error('Failed to add employee:', error);
+  }
+};
 
   return (
     <Card>
