@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { DutyPoint, DutyPointFormData } from '../../../types/dutypoint';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-// import { addDutyPoint } from '../../../store/slices/dutyPointSlice';
+import { createDutyPoint } from '../../../store/slices/dutyPointSlice';
 import { useNavigate } from 'react-router-dom';
 
 interface DutyPointFormProps {
@@ -40,7 +40,7 @@ const DutyPointForm: React.FC<DutyPointFormProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // const { loading: reduxLoading } = useAppSelector(state => state.dutyPoint); 
+  const { loading: reduxLoading } = useAppSelector(state => state.dutyPoint); 
 
   const {
     register,
@@ -60,11 +60,10 @@ const DutyPointForm: React.FC<DutyPointFormProps> = ({
         }
   });
 
-  // Submit logic to send data to backend
   const handleFormSubmit = async (data: DutyPointFormData) => {
     try {
       console.log("Submitting DutyPoint form with data:", data);
-      // await dispatch(addDutyPoint(data)).unwrap(); // Uncomment and adjust as needed
+      await dispatch(createDutyPoint(data)).unwrap();
       navigate('/dashboard/dutypoints');
     } catch (error) {
       console.error('Failed to add duty point:', error);
@@ -123,7 +122,7 @@ const DutyPointForm: React.FC<DutyPointFormProps> = ({
                 variant="contained"
                 disabled={loading /* || reduxLoading */}
               >
-                {loading /* || reduxLoading */ ? 'Saving...' : 'Save'}
+                {loading  || reduxLoading ? 'Saving...' : 'Save'}
               </Button>
             </Box>
           </Stack>
