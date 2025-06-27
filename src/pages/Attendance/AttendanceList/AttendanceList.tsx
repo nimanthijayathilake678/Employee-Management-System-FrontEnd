@@ -25,17 +25,17 @@ import { Attendance } from '../../../types/attendace';
 
 const AttendanceList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { attendances, loading, error } = useAppSelector(state => state.attendace);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     dispatch(fetchAttendances());
   }, [dispatch]);
 
-  // Search by employee name (if available)
-  const filteredAttendances = attendances.filter(att =>
-    // att.employee?.employee_name?.toLowerCase().includes(searchTerm.toLowerCase())
-    att.employee?.employee_id
+  const { attendances = [], loading, error } = useAppSelector(state => state.attendace);
+
+  // Filter attendances by employee firstName and lastName
+  const filteredAttendances = (Array.isArray(attendances) ? attendances : []).filter(att =>
+    `${att.employee?.firstName ?? ''} ${att.employee?.lastName ?? ''}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) return <Typography>Loading...</Typography>;
@@ -115,11 +115,11 @@ const AttendanceList: React.FC = () => {
             {filteredAttendances.map((att: Attendance) => (
               <TableRow key={att.attendance_id}>
                 <TableCell>{att.date}</TableCell>
-                {/* <TableCell>
+                <TableCell>
                   {att.employee
-                    ? `${att.employee.employee_name ?? ''} (${att.employee.employee_id ?? ''})`
+                    ? `${att.employee.firstName ?? ''} ${att.employee.lastName ?? ''} (${att.employee.employee_id ?? ''})`
                     : '-'}
-                </TableCell> */}
+                </TableCell>
                 <TableCell>{att.shift}</TableCell>
                 <TableCell>
                   {att.checkInTime ? new Date(att.checkInTime).toLocaleTimeString() : '-'}
@@ -142,11 +142,11 @@ const AttendanceList: React.FC = () => {
                     size="small"
                   />
                 </TableCell>
-                {/* <TableCell>
+                <TableCell>
                   {att.dutyPoint
                     ? `${att.dutyPoint.dutyPoint_name ?? ''} (${att.dutyPoint.dutyPoint_id ?? ''})`
                     : '-'}
-                </TableCell> */}
+                </TableCell>
                 <TableCell>{att.remarks ?? '-'}</TableCell>
                 <TableCell>
                   <IconButton

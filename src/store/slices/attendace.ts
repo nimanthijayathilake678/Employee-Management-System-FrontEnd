@@ -11,6 +11,7 @@ export const fetchAttendances = createAsyncThunk(
       url += `?${params}`;
     }
     const response = await fetch(url);
+    console.log(response);
     return (await response.json()) as Attendance[];
   }
 );
