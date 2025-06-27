@@ -28,6 +28,7 @@ export const createAttendance = createAsyncThunk(
       });
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('Attendance creation error:', errorData); 
         return rejectWithValue(errorData.message || 'Failed to create attendance');
       }
       return (await response.json()) as Attendance;

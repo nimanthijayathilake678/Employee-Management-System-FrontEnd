@@ -10,8 +10,8 @@ export interface Attendance {
   };
   date: string; 
   shift: ShiftType;
-  checkInTime?: string; 
-  checkOutTime?: string;
+  checkInTime: string; 
+  checkOutTime: string;
   breakDuration?: number; 
   overtimeHours?: number;
   status: AttendanceStatus;
@@ -27,12 +27,15 @@ export interface AttendanceFormData {
   employee_id: number;
   date: string;
   shift: ShiftType;
-  checkInTime?: string;
-  checkOutTime?: string;
+  checkInTime: string  | null;
+  checkOutTime: string  | null;
   breakDuration?: number;
   overtimeHours?: number;
   status: AttendanceStatus;
   dutyPoint_id: number;
+  dutyPoint_name: string;
+  firstName: string;
+  lastName:string;
   remarks?: string;
 }
 
