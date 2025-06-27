@@ -24,10 +24,6 @@ const Dashboard: React.FC = () => {
           <Typography>Employee create and view</Typography>
         </Paper>
         <Paper elevation={3} sx={{ padding: 2, flex: '1 1 30%' }}>
-          <Typography variant="h6">ATTENDANCE</Typography>
-          <Typography>Mark attendance and view</Typography>
-        </Paper>
-        <Paper elevation={3} sx={{ padding: 2, flex: '1 1 30%' }}>
           <Typography variant="h6">INVOICE</Typography>
           <Typography>Invoice Details</Typography>
         </Paper>
@@ -43,9 +39,13 @@ const Dashboard: React.FC = () => {
           <Typography variant="h6">DUTY POINT MANAGMENT</Typography>
           <Typography>Duty Points Creations</Typography>
         </Paper>
-        <Paper elevation={3} sx={{ padding: 2, flex: '1 1 30%' }}>
-          <Typography variant="h6">PAYSHEET MANAGMENT</Typography>
-          <Typography>2</Typography>
+        <Paper
+          elevation={3}
+          sx={{ padding: 2, flex: '1 1 30%', cursor: 'pointer' }} 
+          onClick={() => navigate('/dashboard/attendace')} 
+        >
+          <Typography variant="h6">ATTENDACE MANAGAMENT</Typography>
+          <Typography>Attendace Managament</Typography>
         </Paper>
       </Box>
     </>
@@ -53,3 +53,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
