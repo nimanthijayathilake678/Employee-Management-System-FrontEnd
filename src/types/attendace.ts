@@ -5,7 +5,8 @@ export interface Attendance {
   attendance_id: number;
   employee: {
     employee_id: number;
-    employee_name: string;
+    firstName: string;
+    lastName:string;
   };
   date: string; 
   shift: ShiftType;
@@ -35,13 +36,14 @@ export interface AttendanceFormData {
   remarks?: string;
 }
 
-export interface AttendanceFilter {
+export interface AttendanceFilter{
   search?: string;
   status?: AttendanceStatus;
   shift?: ShiftType;
   dateFrom?: string;
   dateTo?: string;
   dutyPoint_id?: number;
+  firstName?:string;
   page?: number;
   size?: number;
   sortBy?: string;
