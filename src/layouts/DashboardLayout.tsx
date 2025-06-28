@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom'; // <-- import useLocation
 import {
   Box,
   Drawer,
   AppBar,
-  Toolbar,
-  List,
-  Typography,
-  Divider,
-  IconButton,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-} from '@mui/icons-material';
-// import Sidebar from './Sidebar';
-// import Header from './Header';
 
 const DRAWER_WIDTH = 240;
 
@@ -25,6 +14,10 @@ const DashboardLayout: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = useState(!isMobile);
+  const location = useLocation(); // <-- get current location
+
+  // Check if current route is dashboard root
+  const isDashboardPage = location.pathname === '/dashboard';
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -35,8 +28,16 @@ const DashboardLayout: React.FC = () => {
       <AppBar
         position="fixed"
         sx={{
-          width: { md: open ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%' },
-          ml: { md: open ? `${DRAWER_WIDTH}px` : 0 },
+          width: {
+            md: !isDashboardPage && open
+              ? `calc(100% - ${DRAWER_WIDTH}px)`
+              : '100%',
+          },
+          ml: {
+            md: !isDashboardPage && open
+              ? `${DRAWER_WIDTH}px`
+              : 0,
+          },
           transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -46,32 +47,38 @@ const DashboardLayout: React.FC = () => {
         {/* <Header onMenuClick={handleDrawerToggle} /> */}
       </AppBar>
 
-      <Drawer
-        variant={isMobile ? 'temporary' : 'persistent'}
-        open={open}
-        onClose={handleDrawerToggle}
-        sx={{
-          width: DRAWER_WIDTH,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+      {!isDashboardPage && (
+        <Drawer
+          variant={isMobile ? 'temporary' : 'persistent'}
+          open={open}
+          onClose={handleDrawerToggle}
+          sx={{
             width: DRAWER_WIDTH,
-            boxSizing: 'border-box',
-          },
-        }}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
-        {/* <Sidebar onClose={isMobile ? handleDrawerToggle : undefined} /> */}
-      </Drawer>
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: DRAWER_WIDTH,
+              boxSizing: 'border-box',
+            },
+          }}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          {/* <Sidebar onClose={isMobile ? handleDrawerToggle : undefined} /> */}
+        </Drawer>
+      )}
 
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { md: open ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%' },
-          mt: 8, // Account for AppBar height
+          width: {
+            md: !isDashboardPage && open
+              ? `calc(100% - ${DRAWER_WIDTH}px)`
+              : '100%',
+          },
+          mt: 8,
         }}
       >
         <Outlet />
