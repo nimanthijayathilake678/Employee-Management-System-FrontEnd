@@ -24,7 +24,7 @@ export interface Attendance {
 }
 
 export interface AttendanceFormData {
-  employee_id: number;
+  //employee_id: number;
   date: string;
   shift: ShiftType;
   checkInTime: string  | null;
@@ -32,10 +32,19 @@ export interface AttendanceFormData {
   breakDuration?: number;
   overtimeHours?: number;
   status: AttendanceStatus;
-  dutyPoint_id: number;
-  dutyPoint_name: string;
-  firstName: string;
-  lastName:string;
+  //dutyPoint_id: number;
+  dutyPoint: {
+    dutyPoint_id: number;
+    //dutyPoint_name: string;
+  };
+  employee: {
+    employee_id: number;
+    // firstName: string;
+    // lastName:string;
+  };
+  // dutyPoint_name: string;
+  // firstName: string;
+  // lastName:string;
   remarks?: string;
 }
 

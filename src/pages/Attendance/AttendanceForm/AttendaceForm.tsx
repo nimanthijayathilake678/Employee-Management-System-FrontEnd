@@ -14,8 +14,11 @@ interface AttendaceFormProps {
   attendance?: AttendanceFormData;
 }
 
+// Update schema to match nested structure
 const schema = yup.object({
-  employee_id: yup.number().required('Employee is required'),
+  employee: yup.object({
+    employee_id: yup.number().required('Employee is required'),
+  }),
   date: yup.string().required('Date is required'),
   shift: yup.mixed<ShiftType>().oneOf(['DAY', 'NIGHT']).required('Shift is required'),
   checkInTime: yup.string().notRequired().nullable(),
@@ -23,10 +26,9 @@ const schema = yup.object({
   breakDuration: yup.number().nullable().notRequired(),
   overtimeHours: yup.number().nullable().notRequired(),
   status: yup.mixed<AttendanceStatus>().oneOf(['PRESENT', 'ABSENT', 'LATE', 'ON_LEAVE', 'HALF_DAY']).required('Status is required'),
-  dutyPoint_id: yup.number().required('Duty Point is required'),
-  dutyPoint_name: yup.string().notRequired().nullable(),
-  firstName: yup.string().notRequired().nullable(),
-  lastName: yup.string().notRequired().nullable(),
+  dutyPoint: yup.object({
+    dutyPoint_id: yup.number().required('Duty Point is required'),
+  }),
   remarks: yup.string().notRequired().nullable(),
 });
 
@@ -53,14 +55,11 @@ const AttendaceForm: React.FC<AttendaceFormProps> = ({ attendance }) => {
           date: attendance.date,
         }
       : {
-          employee_id: 0,
+          employee: { employee_id: 0 },
           date: formatDate(new Date()),
           shift: 'DAY',
           status: 'PRESENT',
-          dutyPoint_id: 0,
-          dutyPoint_name: '',  
-          firstName: '', 
-          lastName: '',  
+          dutyPoint: { dutyPoint_id: 0 },
           checkInTime: '',
           checkOutTime: '',
           breakDuration: undefined,
@@ -71,23 +70,23 @@ const AttendaceForm: React.FC<AttendaceFormProps> = ({ attendance }) => {
 
   const onSubmit: SubmitHandler<AttendanceFormData> = async (data) => {
     const currentDate = moment().format('YYYY-MM-DD');
-       const payload = {
-           ...data,
-            employee: { employee_id: data.employee_id },
-            dutyPoint: {
-                dutyPoint_id: data.dutyPoint_id,
-                dutyPoint_name: data.dutyPoint_name,
-            },
-            date: typeof data.date === 'string' ? data.date : formatDate(data.date as unknown as Date),
-            checkInTime: data.checkInTime ? `${currentDate}T${data.checkInTime}` : null,
-            checkOutTime: data.checkOutTime ? `${currentDate}T${data.checkOutTime}` : null,
-       };
-       console.log(payload)
-       await dispatch(createAttendance(payload)).unwrap();
-       navigate('/dashboard/attendance');
+    const payload = {
+      employee: { employee_id: data.employee.employee_id },
+      dutyPoint: { dutyPoint_id: data.dutyPoint.dutyPoint_id },
+      date: typeof data.date === 'string' ? data.date : formatDate(data.date as unknown as Date),
+      shift: data.shift,
+      status: data.status,
+      checkInTime: data.checkInTime ? `${currentDate}T${data.checkInTime}` : null,
+      checkOutTime: data.checkOutTime ? `${currentDate}T${data.checkOutTime}` : null,
+      breakDuration: data.breakDuration,
+      overtimeHours: data.overtimeHours,
+      remarks: data.remarks,
+    };
+    console.log(payload);
+    await dispatch(createAttendance(payload)).unwrap();
+    navigate('/dashboard/attendace');
   };
 
-  
   return (
     <Box>
       <Typography variant="h5" mb={2}>
@@ -97,15 +96,15 @@ const AttendaceForm: React.FC<AttendaceFormProps> = ({ attendance }) => {
         <Stack spacing={3}>
           <Box display="flex" gap={3} flexWrap="wrap">
             <Controller
-              name="employee_id"
+              name="employee.employee_id"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Employee ID"
                   type="number"
-                  error={!!errors.employee_id}
-                  helperText={errors.employee_id?.message}
+                  error={!!errors.employee?.employee_id}
+                  helperText={errors.employee?.employee_id?.message}
                   fullWidth
                 />
               )}
@@ -171,54 +170,15 @@ const AttendaceForm: React.FC<AttendaceFormProps> = ({ attendance }) => {
               )}
             />
             <Controller
-              name="dutyPoint_id"
+              name="dutyPoint.dutyPoint_id"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Duty Point ID"
                   type="number"
-                  error={!!errors.dutyPoint_id}
-                  helperText={errors.dutyPoint_id?.message}
-                  fullWidth
-                />
-              )}
-            />
-            <Controller
-              name="dutyPoint_name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Duty Point Name"
-                  error={!!errors.dutyPoint_name}
-                  helperText={errors.dutyPoint_name?.message}
-                  fullWidth
-                />
-              )}
-            />
-            <Controller
-              name="firstName"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="First Name"
-                  error={!!errors.firstName}
-                  helperText={errors.firstName?.message}
-                  fullWidth
-                />
-              )}
-            />
-            <Controller
-              name="lastName"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Last Name"
-                  error={!!errors.lastName}
-                  helperText={errors.lastName?.message}
+                  error={!!errors.dutyPoint?.dutyPoint_id}
+                  helperText={errors.dutyPoint?.dutyPoint_id?.message}
                   fullWidth
                 />
               )}
