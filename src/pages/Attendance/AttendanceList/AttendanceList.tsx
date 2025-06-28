@@ -22,10 +22,12 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { fetchAttendances } from '../../../store/slices/attendace';
 import { Attendance } from '../../../types/attendace';
+import { useNavigate } from 'react-router-dom';
 
 const AttendanceList: React.FC = () => {
   const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAttendances());
@@ -115,7 +117,19 @@ const AttendanceList: React.FC = () => {
             {filteredAttendances.map((att: Attendance) => (
               <TableRow key={att.attendance_id}>
                 <TableCell>{att.date}</TableCell>
-                <TableCell>
+                <TableCell
+                  sx={{
+                    cursor: att.employee ? 'pointer' : 'default',
+                    color: att.employee ? 'primary.main' : 'inherit',
+                    textDecoration: att.employee ? 'underline' : 'none'
+                  }}
+                  onClick={() => {
+                    if (att.employee?.employee_id) {
+                      // navigate(`/employee/profile/${att.employee.employee_id}`);
+                      navigate('/dashboard/employee/profile')
+                    }
+                  }}
+                >
                   {att.employee
                     ? `${att.employee.firstName ?? ''} ${att.employee.lastName ?? ''} (${att.employee.employee_id ?? ''})`
                     : '-'}
@@ -142,7 +156,18 @@ const AttendanceList: React.FC = () => {
                     size="small"
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell
+                  sx={{
+                    cursor: att.dutyPoint ? 'pointer' : 'default',
+                    color: att.dutyPoint ? 'primary.main' : 'inherit',
+                    textDecoration: att.dutyPoint ? 'underline' : 'none'
+                  }}
+                  onClick={() => {
+                    if (att.dutyPoint?.dutyPoint_id) {
+                      navigate(`/dutypoint/profile/${att.dutyPoint.dutyPoint_id}`);
+                    }
+                  }}
+                >
                   {att.dutyPoint
                     ? `${att.dutyPoint.dutyPoint_name ?? ''} (${att.dutyPoint.dutyPoint_id ?? ''})`
                     : '-'}
