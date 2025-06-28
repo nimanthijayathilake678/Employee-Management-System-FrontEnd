@@ -22,6 +22,7 @@ import DutyPointList from './pages/DutyPoint/DutyPointList/DutyPointList';
 import DutyPointForm from './pages/DutyPoint/DutyPointForm/DutyPointForm';
 import AttendaceList from './pages/Attendance/AttendanceList/AttendanceList';
 import AttendanceForm from './pages/Attendance/AttendanceForm/AttendaceForm';
+import EmployeeProfile from './pages/Employees/EmployeeProfile/EmployeeProfile';
 
 // import EmployeeEdit from './pages/Employees/EmployeeEdit';
 // import InvoiceList from './pages/Invoices/InvoiceList';
@@ -64,6 +65,11 @@ const App: React.FC = () => {
                   element={<EmployeeCreate />}
                 />
                 <Route path="/dashboard/dutypoints" element={<DutyPointList/>} />
+                 <Route
+                  // path="/employee/profile/:employee_id"
+                  path="/dashboard/employee/profile"
+                  element={<EmployeeProfile />}
+                  />
                 <Route
                   path="/dashboard/dutypoints/create"
                   element={<DutyPointForm />}
@@ -73,6 +79,7 @@ const App: React.FC = () => {
                   path="/dashboard/attendance/create"
                   element={<AttendanceForm />}
                 />
+
                 {/* <Route path="employees/edit/:id" element={<EmployeeEdit />} />
                 <Route path="attendance" element={<AttendanceList />} />
                 <Route path="invoices" element={<InvoiceList />} />
