@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Paper, CircularProgress, Avatar } from '@mui/material';
 
-// Dummy fetch function, replace with your actual API call
 const fetchEmployeeById = async (id: string) => {
-  // Replace with actual API call
-  // Example: return await axios.get(`/api/employees/${id}`);
-  return {
-    employee_id: id,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '1234567890',
-    position: 'Security Officer',
-    avatarUrl: '', // Optional
-  };
+  try {
+    const response = await fetch(`http://localhost:8089/api/employees/${id}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to fetch employee');
+    }
+    return await response.json();
+  } catch (error: any) {
+    throw new Error(error.message || 'Failed to fetch employee');
+  }
 };
 
 const EmployeeProfile: React.FC = () => {

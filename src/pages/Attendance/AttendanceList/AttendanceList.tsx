@@ -140,8 +140,7 @@ const AttendanceList: React.FC = () => {
                       }}
                       onClick={() => {
                         if (att.employee?.employee_id) {
-                          // navigate(`/employee/profile/${att.employee.employee_id}`);
-                          navigate('/dashboard/employee/profile')
+                          navigate(`/dashboard/employee/profile/${att.employee.employee_id}`);
                         }
                       }}
                     >

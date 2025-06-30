@@ -10,6 +10,23 @@ export const fetchEmployees = createAsyncThunk(
   }
 );
 
+// Async thunk for fetching an employee by ID
+export const fetchEmployeeById = createAsyncThunk(
+  'employee/fetchEmployeeById',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:8089/api/employees/${id}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || 'Failed to fetch employee');
+      }
+      return (await response.json()) as Employee;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch employee');
+    }
+  }
+);
+
 // Async thunk for deleting an employee
 export const deleteEmployee = createAsyncThunk(
   'employee/deleteEmployee',
