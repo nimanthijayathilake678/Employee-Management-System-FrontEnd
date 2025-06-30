@@ -66,8 +66,8 @@ const App: React.FC = () => {
                 />
                 <Route path="/dashboard/dutypoints" element={<DutyPointList/>} />
                  <Route
-                  // path="/employee/profile/:employee_id"
-                  path="/dashboard/employee/profile"
+                  path="/dashboard/employee/profile/:employee_id"
+                  //path="/dashboard/employee/profile"
                   element={<EmployeeProfile />}
                   />
                 <Route
